@@ -6,7 +6,7 @@
   "dev": "next dev",
   "build": "next build",
   "start": "next start",
-  "lint": "next lint --no-warn", 
+  "lint": "next lint --max-warnings=0",
   "lint:fix": "eslint . --fix",
   "prepare": "husky install"
 },
