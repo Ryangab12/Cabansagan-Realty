@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") 
+}
+
+model Admin {
+  id        String  @id @default(uuid()) @db.Uuid  // Ensure this is a UUID
+  email     String  @unique
+  password  String  
+  properties Property[]
+}
+
+model Property {
+  id            String   @id @default(uuid())
+  adminID       String   @db.Uuid  // Matches Admin.id type
+  title         String  
+  price         Float  
+  location      String  
+  images        String[] // Array of image URLs from Supabase Storage
+  description   String  
+  dateCreated   DateTime @default(now())
+
+  statusID      String  
+  typeID        String  
+  listingTypeID String  
+  contactNumber String  // Phone number for WhatsApp/Viber inquiries
+  facebookGroup String? // Optional Facebook group link
+  email         String  // Email for direct inquiries
+
+  admin         Admin          @relation(fields: [adminID], references: [id])
+  status        PropertyStatus @relation(fields: [statusID], references: [id])
+  type          PropertyType   @relation(fields: [typeID], references: [id])
+  listingType   ListingType    @relation(fields: [listingTypeID], references: [id])
+}
+
+model PropertyStatus {
+  id       String  @id @default(uuid())
+  status   String  @unique // "available", "sold", "pending"
+  property Property[]
+}
+
+model PropertyType {
+  id       String  @id @default(uuid())
+  typeName String  @unique // "House & Lot", "Lot", "Condo", "Apartment"
+  property Property[]
+}
+
+model ListingType {
+  id       String  @id @default(uuid())
+  typeName String  @unique // "Developer", "Private"
+  property Property[]
+}
