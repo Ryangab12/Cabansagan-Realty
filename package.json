@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "prepare": "husky install"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "lint": "next lint --no-warn", 
+  "lint:fix": "eslint . --fix",
+  "prepare": "husky install"
+},
   "dependencies": {
     "@prisma/client": "^6.5.0",
     "@radix-ui/react-label": "^2.1.2",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.22.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.17.24",
     "@types/react": "^19",
@@ -33,13 +35,16 @@
     "autoprefixer": "^10.4.21",
     "eslint": "^9.22.0",
     "eslint-config-next": "15.2.2",
+    "eslint-plugin-react": "^7.37.4",
+    "globals": "^16.0.0",
     "husky": "^8.0.0",
     "lint-staged": "^15.4.3",
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prisma": "^6.5.0",
     "tailwindcss": "^4.0.13",
-    "typescript": "^5"
+    "typescript": "^5",
+    "typescript-eslint": "^8.26.1"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
