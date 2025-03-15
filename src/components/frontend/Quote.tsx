@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export default function AnimatedQuote() {
-  const words = ["Buy", "Sell", "Appraise"];
+  const words = ["Buy", "Sell", "Appraise", "Rent"];
   const [index, setIndex] = useState(0);
   const [showFinalText, setShowFinalText] = useState(false);
 

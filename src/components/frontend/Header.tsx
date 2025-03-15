@@ -1,90 +1,143 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronDown, Menu, X } from "lucide-react";
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useRouter();
 
-  const handleBuyPage = () => {
-    navigate.push("/buy");
+  const handleNavigation = (path: string) => {
+    navigate.push(path);
+    setMenuOpen(false);
+    setIsOpen(false);
   };
 
-  const handleSellPage = () => {
-    navigate.push("/sell");
-  };
-
-  const handleAppraisalPage = () => {
-    navigate.push("/appraisal");
-  };
-
-  const handleHomeButton = () => {
-    navigate.push("/home");
-  };
-
-  const handleAboutUsButton = () => {
-    navigate.push("/about");
-  };
-
-  const handleLogInButton = () => {
-    navigate.push("/auth/login");
-  };
   return (
-    <div className="flex bg-white w-full h-24 top-0 left-0 shadow-md">
-      <div className="flex flex-row justify-between items-center w-full px-10 text-xl">
-        <h1>
-          <img
-            onClick={handleHomeButton}
-            className="h-28 w-40 cursor-pointer"
-            src="/samplelogo.png"
-            alt=""
-          />
-        </h1>
+    <div className="bg-gray-200 w-full shadow-md">
+      <div className="flex items-center justify-between px-4 md:px-8 lg:px-16 h-20">
+        <img
+          onClick={() => handleNavigation("/home")}
+          className="h-14 md:h-20 lg:h-24 cursor-pointer"
+          src="/title.png"
+          alt="Logo"
+        />
 
-        <h1>
+        <div className="hidden md:flex items-center space-x-6 text-lg md:text-xl">
           <button
-            onClick={handleBuyPage}
-            className="cursor-pointer underline hover:no-underline"
+            onClick={() => handleNavigation("/home")}
+            className="font-bold hover:underline cursor-pointer"
           >
-            Buy
+            Home
           </button>
-        </h1>
 
-        <h1>
-          <button
-            onClick={handleSellPage}
-            className="cursor-pointer underline hover:no-underline"
-          >
-            Sell
-          </button>
-        </h1>
+          <div className="relative">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="font-bold px-4 py-2 flex items-center hover:underline cursor-pointer"
+            >
+              Inquire <ChevronDown className="ml-1 w-5 h-5" />
+            </button>
 
-        <h1>
-          <button
-            onClick={handleAppraisalPage}
-            className="cursor-pointer underline hover:no-underline"
-          >
-            Appraisal
-          </button>
-        </h1>
+            {isOpen && (
+              <div className="absolute left-0 mt-2 w-40 bg-gray-200 border border-gray-300 shadow-lg rounded-md z-50">
+                {["buy", "sell", "appraisal", "rent"].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => handleNavigation(`/${item}`)}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  >
+                    {item.charAt(0).toUpperCase() + item.slice(1)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
 
-        <h1>
           <button
-            onClick={handleAboutUsButton}
-            className="cursor-pointer underline hover:no-underline"
+            onClick={() => handleNavigation("/contact")}
+            className="font-bold hover:underline cursor-pointer"
           >
-            About Us!
+            Contact Us
           </button>
-        </h1>
 
-        <h1>
           <button
-            onClick={handleLogInButton}
-            className="text-white bg-black py-2 px-4 rounded-md cursor-pointer"
+            onClick={() => handleNavigation("/about")}
+            className="font-bold hover:underline cursor-pointer"
           >
-            Log In
+            About Us
           </button>
-        </h1>
+        </div>
+
+        <button
+          onClick={() => handleNavigation("/auth/login")}
+          className="hidden md:flex cursor-pointer"
+        >
+          <img src="/admin.png" alt="Admin" className="h-10 w-10" />
+        </button>
+
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden focus:outline-none cursor-pointer"
+        >
+          {menuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
+        </button>
+      </div>
+
+      <div
+        className={`${menuOpen ? "flex" : "hidden"} md:hidden flex-col items-center space-y-4 py-4 bg-gray-200 w-full z-50`}
+      >
+        <button
+          onClick={() => handleNavigation("/home")}
+          className="font-bold hover:underline cursor-pointer"
+        >
+          Home
+        </button>
+
+        <div className="relative w-full flex flex-col items-center">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="font-bold px-4 py-2 flex items-center hover:underline cursor-pointer"
+          >
+            Inquire <ChevronDown className="ml-1 w-5 h-5" />
+          </button>
+
+          {isOpen && (
+            <div className="flex flex-col w-full items-center bg-gray-200 border border-gray-300 shadow-lg rounded-md">
+              {["buy", "sell", "appraisal", "rent"].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => handleNavigation(`/${item}`)}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <button
+          onClick={() => handleNavigation("/contact")}
+          className="font-bold hover:underline cursor-pointer"
+        >
+          Contact Us
+        </button>
+        <button
+          onClick={() => handleNavigation("/about")}
+          className="font-bold hover:underline cursor-pointer"
+        >
+          About Us
+        </button>
+
+        <button
+          onClick={() => handleNavigation("/auth/login")}
+          className="cursor-pointer"
+        >
+          <img src="/admin.png" alt="Admin" className="h-10 w-10 " />
+        </button>
       </div>
     </div>
   );
