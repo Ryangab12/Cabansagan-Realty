@@ -13,7 +13,7 @@ const HomePage = () => {
       <Header />
 
       <div className="flex flex-col justify-center items-center flex-1 px-4">
-        <div className="bg-gray-900/10 backdrop-blur-sm p-6 md:p-12 lg:p-16 text-center rounded-lg w-full max-w-lg md:max-w-2xl lg:max-w-3xl">
+        <div className="bg-gray-900/50 backdrop-blur-sm p-6 md:p-12 lg:p-16 text-center rounded-lg w-full max-w-lg md:max-w-2xl lg:max-w-3xl">
           <h1 className="text-white text-xl sm:text-2xl md:text-3xl font-bold mt-4">
             Find Your Place in the Heart of Visayas
           </h1>
