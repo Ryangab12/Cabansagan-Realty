@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
   pull_request:
     branches:
       - main
@@ -11,9 +12,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x] # Run on multiple Node.js versions
 
     steps:
       - name: Checkout repository
@@ -22,32 +20,21 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 20.x
           cache: "npm"
 
       - name: Install dependencies
         run: npm install
 
-      - name: Inject environment variables
-        run: |
-          echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> $GITHUB_ENV
-
-      - name: Verify environment variables (Debugging)
-        run: |
-          echo "NEXT_PUBLIC_SUPABASE_URL: $NEXT_PUBLIC_SUPABASE_URL"
-          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY: $NEXT_PUBLIC_SUPABASE_ANON_KEY"
-
       - name: Run ESLint
         run: npm run lint || true
 
-      # Uncomment when type-checking is needed
       # - name: Run TypeScript type check
       #   run: npm run type-check
 
       - name: Build the application
         run: npm run build
 
-      # Uncomment when tests are ready
+      # Commented out for now, as you're not adding tests yet
       # - name: Run tests
       #   run: npm test
