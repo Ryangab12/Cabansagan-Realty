@@ -1,10 +1,14 @@
 {
   "extends": [
+    "next",
     "next/core-web-vitals",
-    "next/typescript",
+    "plugin:@next/next/recommended", // Add this line
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:storybook/recommended"
+  ],
+  "plugins": [
+    "@next/next" // Explicitly add the Next.js plugin
   ],
   "rules": {
     "react/react-in-jsx-scope": "off"
