@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
@@ -12,6 +11,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x] # Run on multiple Node.js versions
 
     steps:
       - name: Checkout repository
@@ -20,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ matrix.node-version }}
           cache: "npm"
 
       - name: Install dependencies
@@ -29,12 +31,13 @@ jobs:
       - name: Run ESLint
         run: npm run lint || true
 
+      # Uncomment when type-checking is needed
       # - name: Run TypeScript type check
       #   run: npm run type-check
 
       - name: Build the application
         run: npm run build
 
-      # Commented out for now, as you're not adding tests yet
+      # Uncomment when tests are ready
       # - name: Run tests
       #   run: npm test

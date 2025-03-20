@@ -2,14 +2,13 @@
   "extends": [
     "next/core-web-vitals",
     "next/typescript",
-    "eslint:recommended", 
-    "plugin:react/recommended"
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:storybook/recommended"
   ],
-
   "rules": {
     "react/react-in-jsx-scope": "off"
   },
-
   "settings": {
     "react": {
       "version": "detect"
