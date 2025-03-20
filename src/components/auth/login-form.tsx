@@ -28,6 +28,8 @@ export function LoginForm() {
   const router = useRouter();
   const supabase = createClient();
 
+  console.log("Supabase client initialized:", supabase);
+
   // ✅ Prevent memory leaks when checking session
   useEffect(() => {
     let isMounted = true;

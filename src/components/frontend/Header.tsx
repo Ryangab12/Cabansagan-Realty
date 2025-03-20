@@ -22,6 +22,8 @@ const Header = () => {
         <Image
           onClick={() => handleNavigation("/home")}
           className="h-14 md:h-20 lg:h-24 cursor-pointer"
+          width={200}
+          height={100}
           src="/title.png"
           alt="Logo"
         />
@@ -76,7 +78,7 @@ const Header = () => {
           onClick={() => handleNavigation("/auth/login")}
           className="hidden md:flex cursor-pointer"
         >
-          <Image src="/admin.png" alt="Admin" className="h-10 w-10" />
+          <Image src="/admin.png" alt="Admin" width={50} height={50} />
         </button>
 
         <button
@@ -137,7 +139,7 @@ const Header = () => {
           onClick={() => handleNavigation("/auth/login")}
           className="cursor-pointer"
         >
-          <Image src="/admin.png" alt="Admin" className="h-10 w-10 " />
+          <Image src="/admin.png" alt="Admin" width={50} height={50} />
         </button>
       </div>
     </div>
