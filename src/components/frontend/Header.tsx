@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,7 +19,7 @@ const Header = () => {
   return (
     <div className="bg-gray-200 w-full shadow-md">
       <div className="flex items-center justify-between px-4 md:px-8 lg:px-16 h-20">
-        <img
+        <Image
           onClick={() => handleNavigation("/home")}
           className="h-14 md:h-20 lg:h-24 cursor-pointer"
           src="/title.png"
@@ -75,7 +76,7 @@ const Header = () => {
           onClick={() => handleNavigation("/auth/login")}
           className="hidden md:flex cursor-pointer"
         >
-          <img src="/admin.png" alt="Admin" className="h-10 w-10" />
+          <Image src="/admin.png" alt="Admin" className="h-10 w-10" />
         </button>
 
         <button
@@ -136,7 +137,7 @@ const Header = () => {
           onClick={() => handleNavigation("/auth/login")}
           className="cursor-pointer"
         >
-          <img src="/admin.png" alt="Admin" className="h-10 w-10 " />
+          <Image src="/admin.png" alt="Admin" className="h-10 w-10 " />
         </button>
       </div>
     </div>
