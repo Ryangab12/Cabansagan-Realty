@@ -14,6 +14,11 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
+    
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
       - name: Checkout repository
@@ -26,22 +31,10 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm install
-
-      - name: Set up environment variables
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          echo "NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL" >> .env
-          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY" >> .env
-          echo "DATABASE_URL=$DATABASE_URL" >> .env
-      - name: Debug Environment Variables
-        run: cat .env
+        run: npm ci
 
       - name: Run ESLint
-        run: npx eslint . --config .eslintrc.json || true
+        run: npm run lint
 
       - name: Build the application
         run: npm run build
