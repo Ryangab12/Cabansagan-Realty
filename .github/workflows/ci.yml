@@ -34,7 +34,7 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npx eslint . --config .eslintrc.json || true
+        run: npm run lint
 
       - name: Build the application
         run: npm run build
