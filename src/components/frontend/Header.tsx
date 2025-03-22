@@ -1,13 +1,14 @@
 "use client";
-
-import React, { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
+import Image from "next/image";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleNavigation = (path: string) => {
     navigate.push(path);
@@ -15,12 +16,33 @@ const Header = () => {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
   return (
     <div className="bg-gray-200 w-full shadow-md">
       <div className="flex items-center justify-between px-4 md:px-8 lg:px-16 h-20">
-        <img
+        <Image
           onClick={() => handleNavigation("/home")}
           className="h-14 md:h-20 lg:h-24 cursor-pointer"
+          width={200}
+          height={100}
           src="/title.png"
           alt="Logo"
         />
@@ -42,7 +64,10 @@ const Header = () => {
             </button>
 
             {isOpen && (
-              <div className="absolute left-0 mt-2 w-40 bg-gray-200 border border-gray-300 shadow-lg rounded-md z-50">
+              <div
+                ref={dropdownRef}
+                className="absolute left-0 mt-2 w-40 bg-gray-200 border border-gray-300 shadow-lg rounded-md z-50"
+              >
                 {["buy", "sell", "appraisal", "rent"].map((item) => (
                   <button
                     key={item}
@@ -75,7 +100,7 @@ const Header = () => {
           onClick={() => handleNavigation("/auth/login")}
           className="hidden md:flex cursor-pointer"
         >
-          <img src="/admin.png" alt="Admin" className="h-10 w-10" />
+          <Image src="/admin.png" alt="Admin" width={50} height={50} />
         </button>
 
         <button
@@ -136,7 +161,7 @@ const Header = () => {
           onClick={() => handleNavigation("/auth/login")}
           className="cursor-pointer"
         >
-          <img src="/admin.png" alt="Admin" className="h-10 w-10 " />
+          <Image src="/admin.png" alt="Admin" width={50} height={50} />
         </button>
       </div>
     </div>
