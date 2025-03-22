@@ -1,6 +1,5 @@
 "use client";
-
-import React, { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Image from "next/image";
@@ -9,12 +8,32 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useRouter();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const handleNavigation = (path: string) => {
     navigate.push(path);
     setMenuOpen(false);
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
 
   return (
     <div className="bg-gray-200 w-full shadow-md">
@@ -45,7 +64,10 @@ const Header = () => {
             </button>
 
             {isOpen && (
-              <div className="absolute left-0 mt-2 w-40 bg-gray-200 border border-gray-300 shadow-lg rounded-md z-50">
+              <div
+                ref={dropdownRef}
+                className="absolute left-0 mt-2 w-40 bg-gray-200 border border-gray-300 shadow-lg rounded-md z-50"
+              >
                 {["buy", "sell", "appraisal", "rent"].map((item) => (
                   <button
                     key={item}

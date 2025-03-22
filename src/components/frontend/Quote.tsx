@@ -1,7 +1,6 @@
 "use client";
-import React from "react";
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function AnimatedQuote() {
   const words = ["Buy", "Sell", "Appraise", "Rent"];
@@ -24,8 +23,8 @@ export default function AnimatedQuote() {
   }, [index, showFinalText]);
 
   return (
-    <div className="text-center mt-12 text-white text-xl font-bold">
-      <div className="w-40 h-10 flex items-center justify-center mx-auto">
+    <div className="text-center mt-6 text-white font-bold flex flex-col items-center justify-center w-full">
+      <div className="w-40 h-10 flex items-center justify-center">
         {!showFinalText ? (
           <motion.p
             key={index}
@@ -33,7 +32,7 @@ export default function AnimatedQuote() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.5 }}
-            className="absolute"
+            className="absolute text-xs sm:text-sm md:text-lg lg:text-2xl xl:text-3xl 2xl:text-4xl"
           >
             {words[index]}
           </motion.p>
@@ -42,9 +41,9 @@ export default function AnimatedQuote() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
-            className="flex flex-col items-center"
+            className="w-full flex justify-center"
           >
-            <p className="italic text-lg mt-2 max-w-full whitespace-nowrap">
+            <p className="italic text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl mt-2 text-center mx-auto max-w-screen-lg lg:max-w-none px-4 break-words lg:whitespace-nowrap">
               Your Trusted Partner in Every Step of Real Estate!
             </p>
           </motion.div>
