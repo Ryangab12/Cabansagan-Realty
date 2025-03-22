@@ -87,7 +87,7 @@ export default async function Dashboard() {
         <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Button asChild className="w-full justify-start">
-            <Link href="/admin/properties/new" className="flex items-center">
+            <Link href="/admin/addProperty" className="flex items-center">
               <Building className="mr-2 h-4 w-4" />
               Add New Property
             </Link>
