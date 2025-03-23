@@ -1,6 +1,9 @@
 "use client";
+
 import React, { useState } from "react";
-import styles from "./addListing.module.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Image from "next/image"; // Import next/image for optimization
 
 const AddPropertyForm = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +14,6 @@ const AddPropertyForm = () => {
     img: [] as File[],
   });
 
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
@@ -44,13 +46,25 @@ const AddPropertyForm = () => {
       Object.values(formData).some((value) => value === "" || value === null) ||
       formData.img.length === 0
     ) {
-      setError("All fields, including at least one image, are required.");
+      toast.error("All fields, including at least one image, are required.", {
+        position: "top-right",
+        autoClose: 3000,
+      });
       setLoading(false);
       return;
     }
 
-    setError("");
-    alert(`${formData.propertyTitle} is successfully added to the list!`);
+    toast.success(
+      `${formData.propertyTitle} is successfully added to the list!`,
+      {
+        position: "top-center",
+        autoClose: 3000,
+      },
+    );
+
+    console.log(
+      `${formData.propertyTitle}, ${formData.description}, ${formData.price}`,
+    );
 
     setFormData({
       propertyTitle: "",
@@ -64,15 +78,17 @@ const AddPropertyForm = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.formContainer}>
-        <form onSubmit={handleList}>
-          <h1 className={styles.label}>Add Property Listing </h1>
-
+    <div className="flex justify-center items-center h-screen bg-gray-100 p-6">
+      <ToastContainer position="top-center" autoClose={3000} />
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-lg mt-24">
+        <h1 className="text-2xl font-bold text-center mb-4">
+          Add Property Listing
+        </h1>
+        <form onSubmit={handleList} className="space-y-4">
           <input
             type="text"
             placeholder="Property Title"
-            className={styles.propTitle}
+            className="w-full p-2 border rounded"
             name="propertyTitle"
             value={formData.propertyTitle}
             onChange={handleChange}
@@ -81,7 +97,7 @@ const AddPropertyForm = () => {
           <input
             type="text"
             placeholder="Description"
-            className={styles.description}
+            className="w-full p-2 border rounded"
             name="description"
             value={formData.description}
             onChange={handleChange}
@@ -90,20 +106,19 @@ const AddPropertyForm = () => {
           <input
             type="number"
             placeholder="Price"
-            className={styles.price}
+            className="w-full p-2 border rounded"
             name="price"
             value={formData.price}
             onChange={handleChange}
           />
 
           <select
-            id="options"
-            className={styles.option}
+            className="w-full p-2 border rounded"
             name="propertyType"
             value={formData.propertyType}
             onChange={handleChange}
           >
-            <option value="">Select a Property type</option>
+            <option value="">Select a Property Type</option>
             <option value="house and lot">House and Lot</option>
             <option value="condo">Condominium</option>
             <option value="lot">Lot</option>
@@ -111,38 +126,48 @@ const AddPropertyForm = () => {
 
           <input
             type="file"
-            id="propertyImg"
             multiple
             accept="image/*"
-            className={styles.imgUp}
+            className="w-full p-2 border rounded"
             onChange={handleChange}
           />
-          {error && <p className={styles.error}>{error}</p>}
 
-          <button type="submit" className={styles.addButton} disabled={loading}>
+          <button
+            type="submit"
+            className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
+            disabled={loading}
+          >
             {loading ? "Adding..." : "Add Listing"}
           </button>
         </form>
-      </div>
 
-      <div className={styles.imagePreviewContainer}>
-        <h3 className={styles.prevLab}>Property Image Preview: </h3>
-        {formData.img.map((file, index) => (
-          <div key={index} className={styles.imagePreview}>
-            <img
-              src={URL.createObjectURL(file)}
-              alt="Preview"
-              className={styles.previewImg}
-            />
-            <button
-              type="button"
-              className={styles.removeBtn}
-              onClick={() => handleRemoveImage(index)}
-            >
-              Remove
-            </button>
+        {formData.img.length > 0 && (
+          <div className="mt-6">
+            <h3 className="text-lg font-semibold mb-2">
+              Property Image Preview:
+            </h3>
+            <div className="grid grid-cols-3 gap-2">
+              {formData.img.map((file, index) => (
+                <div key={index} className="relative">
+                  <Image
+                    src={URL.createObjectURL(file)}
+                    alt="Preview"
+                    width={100}
+                    height={100}
+                    className="w-full h-24 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-1 right-1 bg-red-500 text-white text-xs p-1 rounded"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
