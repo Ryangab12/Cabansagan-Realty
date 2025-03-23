@@ -3,8 +3,14 @@
 import React from "react";
 import Header from "@/components/frontend/Header";
 import AnimatedQuote from "@/components/frontend/Quote";
+import { useRouter } from "next/navigation";
 
 const HomePage = () => {
+  const navigate = useRouter();
+
+  const handleGetStartedButton = () => {
+    navigate.push("/buy");
+  };
   return (
     <div
       className="flex flex-col w-full min-h-screen bg-cover bg-center bg-repeat"
@@ -27,7 +33,10 @@ const HomePage = () => {
           </h2>
 
           <div className="mt-8 sm:mt-12 md:mt-16">
-            <button className="text-white border border-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-md transition duration-300 hover:bg-white hover:text-black cursor-pointer">
+            <button
+              className="text-white border border-white px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-md transition duration-300 hover:bg-white hover:text-black cursor-pointer"
+              onClick={handleGetStartedButton}
+            >
               Get Started ➩
             </button>
           </div>
