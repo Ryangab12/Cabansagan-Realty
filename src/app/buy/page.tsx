@@ -1,16 +1,10 @@
-"use client";
+import PropertyList from "../../components/frontend/propertylisting"; // Adjust path as needed
 import React from "react";
-import Header from "@/components/frontend/Header";
 
-const BuyPage = () => {
+export default function PropertiesPage() {
   return (
-    <div
-      className="flex flex-col min-h-screen w-full bg-cover bg-center bg-repeat"
-      style={{ backgroundImage: "url('/buy.jpg')" }}
-    >
-      <Header />
+    <div>
+      <PropertyList />
     </div>
   );
-};
-
-export default BuyPage;
+}

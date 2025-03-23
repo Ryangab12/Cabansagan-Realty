@@ -12,31 +12,38 @@ const Header = () => {
 
   const handleNavigation = (path: string) => {
     navigate.push(path);
-    setMenuOpen(false);
-    setIsOpen(false);
+    setTimeout(() => {
+      setIsOpen(false);
+      setMenuOpen(false);
+    }, 100);
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        setIsOpen(false);
+        setTimeout(() => setIsOpen(false), 100);
       }
     };
 
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener("touchstart", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     }
 
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, [isOpen]);
 
   return (
-    <div className="bg-gray-200 w-full shadow-md">
+    <div className="bg-gray-200 w-full shadow-md sticky top-0 z-50">
       <div className="flex items-center justify-between px-4 md:px-8 lg:px-16 h-20">
         <Image
           onClick={() => handleNavigation("/home")}
@@ -57,7 +64,7 @@ const Header = () => {
 
           <div className="relative">
             <button
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={() => setIsOpen((prev) => !prev)}
               className="font-bold px-4 py-2 flex items-center hover:underline cursor-pointer"
             >
               Inquire <ChevronDown className="ml-1 w-5 h-5" />
@@ -104,7 +111,7 @@ const Header = () => {
         </button>
 
         <button
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => setMenuOpen((prev) => !prev)}
           className="md:hidden focus:outline-none cursor-pointer"
         >
           {menuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
@@ -112,7 +119,9 @@ const Header = () => {
       </div>
 
       <div
-        className={`${menuOpen ? "flex" : "hidden"} md:hidden flex-col items-center space-y-4 py-4 bg-gray-200 w-full z-50`}
+        className={`${
+          menuOpen ? "flex" : "hidden"
+        } md:hidden flex-col items-center space-y-4 py-4 bg-gray-200 w-full z-50`}
       >
         <button
           onClick={() => handleNavigation("/home")}
@@ -123,14 +132,17 @@ const Header = () => {
 
         <div className="relative w-full flex flex-col items-center">
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsOpen((prev) => !prev)}
             className="font-bold px-4 py-2 flex items-center hover:underline cursor-pointer"
           >
             Inquire <ChevronDown className="ml-1 w-5 h-5" />
           </button>
 
           {isOpen && (
-            <div className="flex flex-col w-full items-center bg-gray-200 border border-gray-300 shadow-lg rounded-md">
+            <div
+              ref={dropdownRef}
+              className="flex flex-col w-full items-center bg-gray-200 border border-gray-300 shadow-lg rounded-md"
+            >
               {["buy", "sell", "appraisal", "rent"].map((item) => (
                 <button
                   key={item}
